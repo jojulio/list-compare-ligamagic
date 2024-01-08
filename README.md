@@ -1,1 +1,1 @@
-# list-compare-ligamagic
+# scraper-ligamagic

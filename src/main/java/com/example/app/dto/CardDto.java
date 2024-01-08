@@ -5,6 +5,16 @@ public class CardDto {
 
     public String originalName;
 
+    public String price;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
     public String getName() {
         return name;
     }

@@ -31,13 +31,14 @@ public class ScraperController {
             String listUrl1 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=168748"; // want
             String listUrl2 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=185849"; //upgrades lathril
 
-            ArrayList<CardDto> cards1 = getCards(listUrl1);
+            /*ArrayList<CardDto> cards1 = getCards(listUrl1);
             ArrayList<CardDto> cards2 = getCards(listUrl2);
 
             List<CardDto> cardsMatches = getCardsMatches(cards1, cards2);
 
             logger.info((new Date()).toString());
-            return ResponseEntity.ok(cardsMatches);
+            return ResponseEntity.ok(cardsMatches);*/
+            return ResponseEntity.ok(listUrl1);
         } catch (Exception e) {
             throw new Exception("pageNumbers.not.found");
         }
@@ -85,7 +86,7 @@ public class ScraperController {
                     if (bEl != null) {
                         String quantityCards = bEl.text();
                         String quantityCardsReplaced = quantityCards.replace(".", "");
-                        Integer quantityCardsInt = Integer.valueOf(quantityCardsReplaced);
+                        int quantityCardsInt = Integer.parseInt(quantityCardsReplaced);
 
                         double cardsPerPage = (double) quantityCardsInt / 80;
 

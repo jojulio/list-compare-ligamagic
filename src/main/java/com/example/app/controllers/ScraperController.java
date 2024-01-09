@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,10 +74,7 @@ public class ScraperController {
 
     private int getNumberPages(String url) {
         try {
-            Document document = Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36")
-                    .referrer("https://www.google.com")
-                    .ignoreContentType(true).get();
+            Document document = getConnect(url);
             Element rodapeEl = document.getElementsByClass("rodape-secao").first();
             if (rodapeEl != null) {
                 Element spanEl = rodapeEl.getElementsByTag("span").first();
@@ -106,10 +104,7 @@ public class ScraperController {
             for (int i = 1; i <= numberPages; i++) {
                 String urlReplaced = url.replace("&page=\\\\d+", "");
                 String newUrl = urlReplaced.concat("&page=" + i);
-                Document document = Jsoup.connect(newUrl)
-                        .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36")
-                        .referrer("https://www.google.com")
-                        .ignoreContentType(true).get();
+                Document document = getConnect(newUrl);
 
                 Element table = document.getElementById("listacolecao");
                 Element bodyTable = table.getElementsByTag("tbody").first();
@@ -147,6 +142,18 @@ public class ScraperController {
         }
 
         return cardNames;
+    }
+
+    private Document getConnect(String url) {
+        try {
+            return Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36")
+                    .referrer("https://www.google.com")
+                    .ignoreContentType(true)
+                    .get();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String extractIdFromUrl(String url) throws Exception {

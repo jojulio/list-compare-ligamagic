@@ -73,7 +73,10 @@ public class ScraperController {
 
     private int getNumberPages(String url) {
         try {
-            Document document = Jsoup.connect(url).get();
+            Document document = Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36")
+                    .referrer("https://www.google.com")
+                    .ignoreContentType(true).get();
             Element rodapeEl = document.getElementsByClass("rodape-secao").first();
             if (rodapeEl != null) {
                 Element spanEl = rodapeEl.getElementsByTag("span").first();

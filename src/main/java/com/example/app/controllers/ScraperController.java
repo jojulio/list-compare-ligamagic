@@ -27,8 +27,8 @@ public class ScraperController {
     public ResponseEntity get() throws Exception {
         logger.info((new Date()).toString());
         try {
-            String listUrl1 = "https://www.ligamagic.com.br/?view=colecao%2Fcolecao&orderBy=8&modoExibicao=1&modoPrecos=7&pgA=5778&pgB=6822&pgC=41102.67&pgD=68084.68&pgE=117988.60&pgF=1901.89&pgG=3281.42&pgH=4487.63&id=56963&txtIdiomaValue=&txtEdicaoValue=&txt_qualid=&txt_raridade=&txt_extra=&txt_carta=&txt_preco_de=&txt_preco_ate=&txt_formato=&txt_tipo=";
-//            String listUrl1 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=168748"; // want
+//            String listUrl1 = "https://www.ligamagic.com.br/?view=colecao%2Fcolecao&orderBy=8&modoExibicao=1&modoPrecos=7&pgA=5778&pgB=6822&pgC=41102.67&pgD=68084.68&pgE=117988.60&pgF=1901.89&pgG=3281.42&pgH=4487.63&id=56963&txtIdiomaValue=&txtEdicaoValue=&txt_qualid=&txt_raridade=&txt_extra=&txt_carta=&txt_preco_de=&txt_preco_ate=&txt_formato=&txt_tipo=";
+            String listUrl1 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=168748"; // want
             String listUrl2 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=185849"; //upgrades lathril
 
             ArrayList<CardDto> cards1 = getCards(listUrl1);

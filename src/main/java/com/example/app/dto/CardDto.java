@@ -7,6 +7,8 @@ public class CardDto {
 
     public String price;
 
+    public Double priceDouble;
+
     public String getPrice() {
         return price;
     }
@@ -29,5 +31,13 @@ public class CardDto {
 
     public void setOriginalName(String originalName) {
         this.originalName = originalName;
+    }
+
+    public Double getPriceDouble() {
+        return priceDouble;
+    }
+
+    public void setPriceDouble(Double priceDouble) {
+        this.priceDouble = priceDouble;
     }
 }

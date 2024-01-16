@@ -31,6 +31,7 @@ public class ScraperController {
 //            String listUrl1 = "https://www.ligamagic.com.br/?view=colecao%2Fcolecao&orderBy=8&modoExibicao=1&modoPrecos=7&pgA=5778&pgB=6822&pgC=41102.67&pgD=68084.68&pgE=117988.60&pgF=1901.89&pgG=3281.42&pgH=4487.63&id=56963&txtIdiomaValue=&txtEdicaoValue=&txt_qualid=&txt_raridade=&txt_extra=&txt_carta=&txt_preco_de=&txt_preco_ate=&txt_formato=&txt_tipo=";
             String listUrl1 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=168748"; // want
             String listUrl2 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=185849"; //upgrades lathril
+//            String listUrl2 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=245297"; //upgrade wilhelt
 
             ArrayList<CardDto> cards1 = getCards(listUrl1);
             ArrayList<CardDto> cards2 = getCards(listUrl2);
@@ -54,6 +55,8 @@ public class ScraperController {
                 }
             }
         }
+
+        cardsMatches.sort((a, b) -> (int) (a.getPriceDouble() - b.getPriceDouble()));
 
         return cardsMatches;
     }
@@ -98,7 +101,7 @@ public class ScraperController {
         return 0;
     }
 
-    private ArrayList<CardDto> extractData(String url, int numberPages) {
+    private ArrayList<CardDto>  extractData(String url, int numberPages) {
         ArrayList<CardDto> cardNames = new ArrayList<>();
         try {
             for (int i = 1; i <= numberPages; i++) {
@@ -125,7 +128,17 @@ public class ScraperController {
 
                     Element price = row.getElementsByClass("col-pcompra").first();
                     if (price != null) {
-                        cardDto.setPrice(price.text());
+                        String priceString = price.text();
+                        cardDto.setPrice(priceString);
+
+                        String[] priceSplitted = priceString.split(" ");
+                        double priceDouble = 0;
+                        if (priceSplitted[1] != null) {
+                            String priceReplaced = priceSplitted[1].replace(",", ".");
+                            priceDouble = Double.parseDouble(priceReplaced);
+                        }
+                        
+                        cardDto.setPriceDouble(priceDouble);
                     }
 
                     if (cardDto.getName() != null && cardDto.getOriginalName() != null) {

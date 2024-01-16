@@ -3,6 +3,8 @@ package com.example.app.controllers;
 import com.example.app.dto.CardDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Connection;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,7 +47,7 @@ public class ScraperController {
             logger.error("error to scrap", e);
         }
 
-        return ResponseEntity.ok("");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     private List<CardDto> getCardsMatches(ArrayList<CardDto> cards1, ArrayList<CardDto> cards2) {
@@ -161,7 +164,15 @@ public class ScraperController {
 
     private Document getConnect(String url) {
         try {
+
+            Connection.Response response = Jsoup.connect(url)
+                    .method(Connection.Method.GET)
+                    .execute();
+
+            Map<String, String> cookies = response.cookies();
+
             return Jsoup.connect(url)
+                    .cookies(cookies)
                     .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36")
                     .referrer("https://www.google.com")
                     .ignoreContentType(true)

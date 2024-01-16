@@ -14,6 +14,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +32,15 @@ public class ScraperController {
 
     @GetMapping()
     public ResponseEntity get() throws Exception {
+
+        try {
+            URL url = new URL("https://google.com");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+        } catch (Exception e) {
+            logger.error("error to test", e);
+        }
+
         logger.info("Iniciando: " + (new Date()).toString());
         try {
 //            String listUrl1 = "https://www.ligamagic.com.br/?view=colecao%2Fcolecao&orderBy=8&modoExibicao=1&modoPrecos=7&pgA=5778&pgB=6822&pgC=41102.67&pgD=68084.68&pgE=117988.60&pgF=1901.89&pgG=3281.42&pgH=4487.63&id=56963&txtIdiomaValue=&txtEdicaoValue=&txt_qualid=&txt_raridade=&txt_extra=&txt_carta=&txt_preco_de=&txt_preco_ate=&txt_formato=&txt_tipo=";

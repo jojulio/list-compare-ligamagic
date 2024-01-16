@@ -41,7 +41,7 @@ public class ScraperController {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://www.google.com/"))
+                    .uri(URI.create("https://www.ligamagic.com.br/?view=colecao/colecao&id=168748"))
                     .build();
 
             HttpResponse<String> response =

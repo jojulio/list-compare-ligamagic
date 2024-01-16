@@ -37,25 +37,7 @@ public class ScraperController {
 
     @GetMapping()
     public ResponseEntity get() throws Exception {
-
-        try {
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://www.ligamagic.com.br/?view=colecao/colecao&id=168748"))
-                    .build();
-
-            HttpResponse<String> response =
-                    client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            return ResponseEntity.ok(response.body());
-        } catch (Exception e) {
-            logger.error("error to test", e);
-        }
-
-
-        return ResponseEntity.ok("");
-
-        /*logger.info("Iniciando: " + (new Date()).toString());
+        logger.info("Iniciando: " + (new Date()).toString());
         try {
 //            String listUrl1 = "https://www.ligamagic.com.br/?view=colecao%2Fcolecao&orderBy=8&modoExibicao=1&modoPrecos=7&pgA=5778&pgB=6822&pgC=41102.67&pgD=68084.68&pgE=117988.60&pgF=1901.89&pgG=3281.42&pgH=4487.63&id=56963&txtIdiomaValue=&txtEdicaoValue=&txt_qualid=&txt_raridade=&txt_extra=&txt_carta=&txt_preco_de=&txt_preco_ate=&txt_formato=&txt_tipo=";
             String listUrl1 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=168748"; // want
@@ -73,7 +55,7 @@ public class ScraperController {
             logger.error("error to scrap", e);
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();*/
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     private List<CardDto> getCardsMatches(ArrayList<CardDto> cards1, ArrayList<CardDto> cards2) {

@@ -1,6 +1,7 @@
 package com.example.app.controllers;
 
 import com.example.app.dto.CardDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Connection;
@@ -14,9 +15,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,14 +39,23 @@ public class ScraperController {
     public ResponseEntity get() throws Exception {
 
         try {
-            URL url = new URL("https://google.com");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://www.google.com/"))
+                    .build();
+
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return ResponseEntity.ok(response.body());
         } catch (Exception e) {
             logger.error("error to test", e);
         }
 
-        logger.info("Iniciando: " + (new Date()).toString());
+
+        return ResponseEntity.ok("");
+
+        /*logger.info("Iniciando: " + (new Date()).toString());
         try {
 //            String listUrl1 = "https://www.ligamagic.com.br/?view=colecao%2Fcolecao&orderBy=8&modoExibicao=1&modoPrecos=7&pgA=5778&pgB=6822&pgC=41102.67&pgD=68084.68&pgE=117988.60&pgF=1901.89&pgG=3281.42&pgH=4487.63&id=56963&txtIdiomaValue=&txtEdicaoValue=&txt_qualid=&txt_raridade=&txt_extra=&txt_carta=&txt_preco_de=&txt_preco_ate=&txt_formato=&txt_tipo=";
             String listUrl1 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=168748"; // want
@@ -53,13 +67,13 @@ public class ScraperController {
 
             List<CardDto> cardsMatches = getCardsMatches(cards1, cards2);
 
-            logger.info("Finalizado:"+(new Date()).toString());
+            logger.info("Finalizado:" + (new Date()).toString());
             return ResponseEntity.ok(cardsMatches);
         } catch (Exception e) {
             logger.error("error to scrap", e);
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();*/
     }
 
     private List<CardDto> getCardsMatches(ArrayList<CardDto> cards1, ArrayList<CardDto> cards2) {
@@ -87,7 +101,7 @@ public class ScraperController {
 
         String id = extractIdFromUrl(url);
         String urlDefaultLigaMagic = "https://www.ligamagic.com.br/";
-        String newUrl = urlDefaultLigaMagic + "?view=colecao/colecao&id="+id+"&modoExibicao=1&modoPrecos=1";
+        String newUrl = urlDefaultLigaMagic + "?view=colecao/colecao&id=" + id + "&modoExibicao=1&modoPrecos=1";
 
         return extractData(newUrl, numberPages);
     }
@@ -118,7 +132,7 @@ public class ScraperController {
         return 0;
     }
 
-    private ArrayList<CardDto>  extractData(String url, int numberPages) {
+    private ArrayList<CardDto> extractData(String url, int numberPages) {
         ArrayList<CardDto> cardNames = new ArrayList<>();
         try {
             for (int i = 1; i <= numberPages; i++) {
@@ -154,7 +168,7 @@ public class ScraperController {
                             String priceReplaced = priceSplitted[1].replace(",", ".");
                             priceDouble = Double.parseDouble(priceReplaced);
                         }
-                        
+
                         cardDto.setPriceDouble(priceDouble);
                     }
 

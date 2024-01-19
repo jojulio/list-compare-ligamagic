@@ -1,27 +1,19 @@
 package com.example.app.controllers;
 
 import com.example.app.dto.CardDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Connection;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,15 +26,16 @@ public class ScraperController {
 
     private static final Logger logger = LogManager.getLogger(ScraperController.class);
 
-
-    @GetMapping()
-    public ResponseEntity get() throws Exception {
+    @GetMapping("/scraper")
+    public ResponseEntity<List<CardDto>> get() throws Exception {
         logger.info("Iniciando: " + (new Date()).toString());
         try {
-//            String listUrl1 = "https://www.ligamagic.com.br/?view=colecao%2Fcolecao&orderBy=8&modoExibicao=1&modoPrecos=7&pgA=5778&pgB=6822&pgC=41102.67&pgD=68084.68&pgE=117988.60&pgF=1901.89&pgG=3281.42&pgH=4487.63&id=56963&txtIdiomaValue=&txtEdicaoValue=&txt_qualid=&txt_raridade=&txt_extra=&txt_carta=&txt_preco_de=&txt_preco_ate=&txt_formato=&txt_tipo=";
+//            String listUrl1 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=56963";
             String listUrl1 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=168748"; // want
+//            String listUrl1 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=236692";
             String listUrl2 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=185849"; //upgrades lathril
 //            String listUrl2 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=245297"; //upgrade wilhelt
+//            String listUrl2 = "https://www.ligamagic.com.br/?view=colecao/colecao&id=246152"; //carametra
 
             ArrayList<CardDto> cards1 = getCards(listUrl1);
             ArrayList<CardDto> cards2 = getCards(listUrl2);
@@ -146,7 +139,7 @@ public class ScraperController {
 
                         String[] priceSplitted = priceString.split(" ");
                         double priceDouble = 0;
-                        if (priceSplitted[1] != null) {
+                        if (priceSplitted.length > 1) {
                             String priceReplaced = priceSplitted[1].replace(",", ".");
                             priceDouble = Double.parseDouble(priceReplaced);
                         }
